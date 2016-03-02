@@ -42,6 +42,8 @@ public class Level : MonoBehaviour
 	private float m_fCurrentTotalTime;  // m_fCurrentTotalTime: The current total time of the current animation / pause
 	private int m_nCurrentStep;         // m_nCurrentStep: The current step of the text array
 
+	private Gameplay m_Gameplay;        // m_Gameplay: The gameplay instance that is linked to this level
+
 	// Static Fields
 	private static Level m_Instance = null; // m_Instance: The only instance of the current level
 
@@ -49,14 +51,21 @@ public class Level : MonoBehaviour
 	// Awake(): is called at the start of the scene
 	void Awake()
 	{
+		// Gameplay Initialisation
+		m_Gameplay = null;
+		m_Gameplay = this.GetComponent<Gameplay>();
+		if (m_Gameplay == null)
+			Debug.LogWarning(this.name + ".m_Gameplay: Initialisation returns null. Is Gameplay.cs missing from the current gameObject?");
+
 		// Singleton
 		if (m_Instance == null)
 			m_Instance = this;
 		else
 			Destroy(this);
 
+		// Intro-Sequence Initialisation Check
 		if (m_GOSequenceIntro == null)
-			Debug.LogWarning(name + ".m_GOSequenceIntro: Not assigned");
+			Debug.LogWarning(name + ".m_GOSequenceIntro: is not assigned. Please assigned the appropriate intro sequence");
 
 		// Calculations for the level
 		// fLowerLimit: fUpperLimit: Calculate the lower and upper limit of the current sub level in terms of 0.0f to 1.0f
@@ -168,4 +177,7 @@ public class Level : MonoBehaviour
 	public uint Target { get { return m_unTarget; } }
 	/// <summary> Returns the target number of the current level in type integer </summary>
 	public int TargetToInt { get { return (int)m_unTarget; } }
+
+	/// <summary> Returns the instance of the gameplay </summary>
+	public Gameplay GameplayInstance { get { return m_Gameplay; } }
 }
