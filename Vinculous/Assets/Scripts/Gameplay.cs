@@ -6,13 +6,11 @@ using Nyanulities;
 public class Gameplay : MonoBehaviour, IDraggable
 {
 	// Editable-In-Inspector Fields
-	[Header("Playing Node Properties")]
+	[Header("Node Properties")]
 	[Tooltip("The prefab of the node")]
 	[SerializeField] private Object m_NodePrefab;
 	[Tooltip("The parent of the nodes")]
 	[SerializeField] private Transform m_NodeParent;
-	[Tooltip("The radius of the circle in which the nodes will move in")]
-	[SerializeField] private float m_fRadius;
 
 	// Uneditable-In-Inspector Fields
 	private PushPopList<int[]> m_PlayerPreviousStep;    // m_lPlayerPreviousStep: The steps made by the player
@@ -48,7 +46,7 @@ public class Gameplay : MonoBehaviour, IDraggable
 		m_arrGONode = new Node[m_arrnCurrentStep.Length];
 		for (int i = 0; i < m_arrGONode.Length; i++)
 		{
-			m_arrGONode[i] = ((GameObject)Instantiate(m_NodePrefab, Camera.main.WorldToScreenPoint(new Vector3(0f, m_fRadius, 0f)), Quaternion.identity)).GetComponent<Node>();
+			m_arrGONode[i] = ((GameObject)Instantiate(m_NodePrefab, Camera.main.WorldToScreenPoint(Vector3.zero), Quaternion.identity)).GetComponent<Node>();
 			m_arrGONode[i].transform.parent = m_NodeParent;
 			m_arrGONode[i].transform.localScale = Vector3.one;
 
@@ -95,5 +93,4 @@ public class Gameplay : MonoBehaviour, IDraggable
 	/// <summary> Returns the level instance that this gameplay reference to </summary>
 	public Level LevelInstance { get { return m_Level; } }
 	public int NodeCount { get { return m_arrGONode.Length; } }
-	public float NodeRadius { get { return m_fRadius; } }
 }

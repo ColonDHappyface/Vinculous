@@ -4,12 +4,18 @@ using System.Collections;
 
 public class Node : MonoBehaviour
 {
+    // Editable-In-Inspector Fields
+    [Header("Alignment Properties")]
+    [Tooltip("The radius of all the nodes from the center")]
+    [SerializeField] private float m_fRadius = 1.5f;
+    [Tooltip("The speed multiplier for all nodes")]
+    [SerializeField] private float m_fSpeed = 2f;
+
     // Uneditable-In-Inspector Fields
     private Text m_Text;                // m_Text: The text display of the current node
     private CanvasGroup m_CanvasGroup;  // m_CanvasGroup: The canvas group of the current node
 
     private int m_nDigit = 0;
-    private float m_fRadius;
     private float m_fCurrentAngle;
     private float m_fTargetAngle;
     private bool m_bIsEnabled = false;
@@ -19,7 +25,6 @@ public class Node : MonoBehaviour
     {
         m_Text = transform.GetChild(0).GetComponent<Text>();
         m_CanvasGroup = GetComponent<CanvasGroup>();
-        m_fRadius = Level.Instance.GameplayInstance.NodeRadius;
         m_fCurrentAngle = 0;
         m_fTargetAngle = 0;
     }
@@ -31,7 +36,6 @@ public class Node : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.A) && m_bIsEnabled)
         {
             m_fCurrentAngle = UnityEngine.Random.value * 360f;
-            Debug.Log(fDeltaAngle);
         }
 
         if (Mathf.Abs(fDeltaAngle) > 0.01f)
