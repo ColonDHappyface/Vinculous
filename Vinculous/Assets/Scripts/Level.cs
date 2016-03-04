@@ -218,13 +218,11 @@ public class Level : MonoBehaviour, IClickable
         {
             m_CGGameplay.alpha = 1f;
             m_CGGameplay.interactable = true;
-            m_CGGameplay.blocksRaycasts = true;
         }
         else
         {
             m_CGGameplay.alpha = 0f;
             m_CGGameplay.interactable = false;
-            m_CGGameplay.blocksRaycasts = false;
         }
     }
 

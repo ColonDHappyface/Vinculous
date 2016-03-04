@@ -47,7 +47,7 @@ public class Gameplay : MonoBehaviour, IDraggable
 		for (int i = 0; i < m_arrGONode.Length; i++)
 		{
 			m_arrGONode[i] = ((GameObject)Instantiate(m_NodePrefab, Camera.main.WorldToScreenPoint(Vector3.zero), Quaternion.identity)).GetComponent<Node>();
-			m_arrGONode[i].transform.parent = m_NodeParent;
+			m_arrGONode[i].transform.SetParent(m_NodeParent);
 			m_arrGONode[i].transform.localScale = Vector3.one;
 
 			switch (m_arrnCurrentStep[i])
@@ -80,17 +80,45 @@ public class Gameplay : MonoBehaviour, IDraggable
 			}
 	}
 
-	public void OnDragBegin(PointerEventData _pointerEventData) { return; }
+    /// <summary>
+    /// Split the current node into two
+    /// </summary>
+    /// <param name="_node"> The node to be split </param>
+    public void SplitNode(Node _node)
+    {
+        Node newNode = null;
+        // for: Find the next available node
+        for (int i = 0; i < m_arrGONode.Length; i++)
+            if (!m_arrGONode[i].IsEnable)
+            {
+                newNode = m_arrGONode[i];
+                break;
+            }
 
-	public void OnDrag(PointerEventData _pointerEventData)
-	{
-		Debug.Log(_pointerEventData.pointerCurrentRaycast.screenPosition + " of " + new Vector2(Screen.width, Screen.height));
-	}
+        // if: Error check - technically, user cannot and should not reach here
+        if (newNode == null)
+        {
+            Debug.LogWarning(this.name + ".SplitNode(): There is no new node, is array too small?");
+            return;
+        }
 
-	public void OnDragExit(PointerEventData _pointerEventData) { return; }
+        _node.SetDigit(Mathf.FloorToInt((float)_node.Digit / 2f));
+        newNode.EnableNode(Mathf.CeilToInt((float)_node.Digit / 2f));
+        RecalculateNodeTargetPosition();
+    }
 
 	// Getter-Setter Functions
 	/// <summary> Returns the level instance that this gameplay reference to </summary>
 	public Level LevelInstance { get { return m_Level; } }
 	public int NodeCount { get { return m_arrGONode.Length; } }
+
+    // IDraggable Definition
+    public void OnDragBegin(PointerEventData _pointerEventData) { return; }
+
+    public void OnDrag(PointerEventData _pointerEventData) 
+    { 
+        Debug.Log(_pointerEventData.hovered[0].gameObject); 
+    }
+
+    public void OnDragExit(PointerEventData _pointerEventData) { return; }
 }
