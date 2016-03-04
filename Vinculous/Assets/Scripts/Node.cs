@@ -26,12 +26,19 @@ public class Node : MonoBehaviour
 
     void Update()
     {
-        float fDeltaAngle = m_fTargetAngle - m_fCurrentAngle;
-        if (fDeltaAngle > 0.01f)
+        float fDeltaAngle = Mathf.DeltaAngle(m_fCurrentAngle, m_fTargetAngle);
+
+        if (Input.GetKeyDown(KeyCode.A) && m_bIsEnabled)
         {
-            float fNewCurrentAngle = Mathf.DeltaAngle(m_fCurrentAngle, m_fTargetAngle) * Time.deltaTime;
-            this.WorldPosition = Quaternion.Euler(0f, 0f, fNewCurrentAngle) * new Vector3(0f, m_fRadius, 0f);
-            m_fCurrentAngle = fNewCurrentAngle;
+            m_fCurrentAngle = UnityEngine.Random.value * 360f;
+            Debug.Log(fDeltaAngle);
+        }
+
+        if (Mathf.Abs(fDeltaAngle) > 0.01f)
+        {
+            float fNewCurrentAngle = fDeltaAngle * Time.deltaTime;
+            m_fCurrentAngle += fNewCurrentAngle;
+            this.WorldPosition = Quaternion.Euler(0f, 0f, m_fCurrentAngle) * new Vector3(0f, m_fRadius, 0f);
         }
     }
 
