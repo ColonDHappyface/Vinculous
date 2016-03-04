@@ -42,7 +42,7 @@ public class Gameplay : MonoBehaviour, IDraggable
 		// Current-Step Array Initialisation
 		for (int i = 0; i < m_arrnCurrentStep.Length; i++)
 			m_arrnCurrentStep[i] = -1;
-		m_arrnCurrentStep[0] = m_Level.StartToInt;
+		m_arrnCurrentStep[0] = m_Level.StartCountToInt;
 
 		// Node Initialisation
 		m_arrGONode = new Node[m_arrnCurrentStep.Length];
@@ -54,8 +54,8 @@ public class Gameplay : MonoBehaviour, IDraggable
 
 			switch (m_arrnCurrentStep[i])
 			{
-				case -1: m_arrGONode[i].DisableNode(); Debug.Log(m_arrGONode[i].IsEnable); break;
-				default: m_arrGONode[i].EnableNode(Level.Instance.StartToInt); break;
+				case -1: m_arrGONode[i].DisableNode(); break;
+				default: m_arrGONode[i].EnableNode(Level.Instance.StartCountToInt); break;
 			}
 		}
 	}
@@ -82,20 +82,14 @@ public class Gameplay : MonoBehaviour, IDraggable
 			}
 	}
 
-	public void OnDragBegin(PointerEventData _pointerEventData)
-	{
-		return;
-	}
+	public void OnDragBegin(PointerEventData _pointerEventData) { return; }
 
 	public void OnDrag(PointerEventData _pointerEventData)
 	{
 		Debug.Log(_pointerEventData.pointerCurrentRaycast.screenPosition + " of " + new Vector2(Screen.width, Screen.height));
 	}
 
-	public void OnDragExit(PointerEventData _pointerEventData)
-	{
-		return;
-	}
+	public void OnDragExit(PointerEventData _pointerEventData) { return; }
 
 	// Getter-Setter Functions
 	/// <summary> Returns the level instance that this gameplay reference to </summary>

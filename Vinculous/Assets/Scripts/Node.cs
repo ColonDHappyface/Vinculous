@@ -30,7 +30,7 @@ public class Node : MonoBehaviour
         if (fDeltaAngle > 0.01f)
         {
             float fNewCurrentAngle = Mathf.DeltaAngle(m_fCurrentAngle, m_fTargetAngle) * Time.deltaTime;
-            transform.position = Camera.main.WorldToScreenPoint(Quaternion.Euler(0f, 0f, fNewCurrentAngle) * new Vector3(0f, m_fRadius, 0f));
+            this.WorldPosition = Quaternion.Euler(0f, 0f, fNewCurrentAngle) * new Vector3(0f, m_fRadius, 0f);
             m_fCurrentAngle = fNewCurrentAngle;
         }
     }
@@ -46,6 +46,7 @@ public class Node : MonoBehaviour
         m_CanvasGroup.interactable = true;
         m_CanvasGroup.blocksRaycasts = true;
         m_nDigit = _nDigit;
+        this.SetDigit(m_nDigit);
         m_bIsEnabled = true;
     }
 
@@ -71,6 +72,12 @@ public class Node : MonoBehaviour
     }
 
     // Getter-Setter Functions
+    public Vector3 WorldPosition 
+    { 
+        get { return transform.position; }
+        set { transform.position = Camera.main.WorldToScreenPoint(value); } 
+    }
+
     public float Angle { get { return m_fCurrentAngle; } }
     public float TargetAngle { get { return m_fCurrentAngle; } set { m_fCurrentAngle = value; } }
 
